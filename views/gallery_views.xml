@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_product_gallery" model="ir.actions.client">
+        <field name="name">Galería de productos</field>
+        <field name="tag">biotex_product_gallery.gallery</field>
+    </record>
+    <menuitem id="menu_product_gallery_root" name="Galería de productos" sequence="13"
+              action="action_product_gallery" groups="biotex_base.group_biotex_delegation"
+              web_icon="biotex_product_gallery,static/description/icon.svg"/>
+</odoo>
