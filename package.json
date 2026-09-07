@@ -1,0 +1,12 @@
+{
+  "name": "biotex-product-gallery-validation",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/gallery_frontend.test.cjs",
+    "test:templates": "node tests/gallery_templates.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "29.1.1"
+  }
+}

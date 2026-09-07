@@ -47,4 +47,13 @@ node --test tests/gallery_frontend.test.cjs
 
 Las pruebas JavaScript verifican búsquedas simultáneas, respuestas tardías, cancelación al salir y navegación del visor usando el componente real con servicios sustituidos. El procedimiento de instalación debe comprobar además la compilación de assets y la salud del servicio.
 
+Para renderizar las plantillas con el motor Owl de su instalación de Odoo (requiere Node.js compatible con jsdom):
+
+```sh
+npm ci
+OWL_PATH=/ruta/odoo/addons/web/static/lib/owl/owl.js npm run test:templates
+```
+
+Esta prueba monta las plantillas reales en un DOM de prueba y verifica tarjetas, búsqueda, filtros, limpieza, apertura de ficha y navegación entre fotos. No sustituye una revisión visual en el navegador. Las dependencias de Node son exclusivamente de desarrollo; Odoo no las necesita para instalar ni ejecutar el módulo.
+
 Licencia: LGPL-3.0-or-later.

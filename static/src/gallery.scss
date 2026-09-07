@@ -57,7 +57,7 @@
 .bpg-no-photo > i { font-size: 40px; color: #90adb3; }.bpg-no-photo span { font-size: 12px; }
 .bpg-dialog {
     .bpg-detail { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 28px; }
-    .bpg-stage { height: min(53vh, 480px); min-height: 260px; display: flex; align-items: center; justify-content: center; padding: 20px; background: #f7fafb; border-radius: 10px; }
+    .bpg-stage { height: 53vh; max-height: 480px; min-height: 260px; display: flex; align-items: center; justify-content: center; padding: 20px; background: #f7fafb; border-radius: 10px; }
     .bpg-stage > img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .bpg-no-photo h3 { font-size: 17px; }.bpg-no-photo p { max-width: 320px; font-size: 13px; }
     .bpg-viewer-controls { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; }
