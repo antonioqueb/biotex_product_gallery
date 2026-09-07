@@ -1,7 +1,7 @@
 {
     'name': 'Galería de productos',
     'summary': 'Catálogo visual, visor de fotos y búsqueda libre por palabras, claves, marcas y sinónimos',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Distribución de insumos',
     'author': 'Alphaqueb Consulting SAS',
     'website': 'https://github.com/antonioqueb/biotex_product_gallery',

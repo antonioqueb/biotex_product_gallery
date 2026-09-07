@@ -1,47 +1,58 @@
+.bpg, .bpg-dialog {
+    // Follow the active Odoo theme and the shared UX module, including dark mode.
+    --bpg-accent: var(--#{$prefix}primary, #{$o-brand-primary});
+    --bpg-ink: var(--#{$prefix}body-color, #{$o-main-text-color});
+    --bpg-muted: var(--#{$prefix}secondary-color, #{$o-gray-600});
+    --bpg-surface: var(--#{$prefix}body-bg, #{$o-view-background-color});
+    --bpg-background: var(--#{$prefix}tertiary-bg, #{$o-webclient-background-color});
+    --bpg-border: var(--ux-border, var(--#{$prefix}border-color));
+    --bpg-soft: var(--ux-surface-2, var(--#{$prefix}tertiary-bg));
+    color: var(--bpg-ink);
+}
 .bpg {
-    --bpg-accent: #087e8b;
-    --bpg-ink: #233e49;
-    height: 100%; overflow-y: auto; background: #f4f7f8; color: var(--bpg-ink);
-    .btn-primary { background: #08717d; border-color: #08717d; }
-    .btn-link { color: #086975; }
-    .bpg-header { padding: 24px 32px 20px; background: #fff; border-bottom: 1px solid #dde6e8; }
+    display: flex; flex-direction: column; height: 100%; min-height: 0; min-width: 0;
+    overflow: hidden; background: var(--bpg-background);
+    // Odoo hides overflow and scrollbars on .o_action; scroll in a child instead.
+    .bpg-scroll { flex: 1 1 0; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; }
+    .bpg-scroll:focus-visible { outline: 2px solid var(--bpg-accent); outline-offset: -2px; }
+    .bpg-header { padding: 24px 32px 20px; background: var(--bpg-surface); border-bottom: 1px solid var(--bpg-border); }
     .bpg-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
     h1 { margin: 0 0 4px; font-size: 25px; font-weight: 700; letter-spacing: -.5px; }
-    .bpg-heading p { margin: 0; color: #536872; }
-    .bpg-search { display: flex; align-items: center; gap: 12px; border: 1px solid #adc6cb; padding: 6px 7px 6px 16px; border-radius: 10px; background: #fff; }
-    .bpg-search:focus-within { outline: 2px solid #138591; outline-offset: 2px; }
-    .bpg-search > i { color: #08717d; font-size: 19px; }
+    .bpg-heading p { margin: 0; color: var(--bpg-muted); }
+    .bpg-search { display: flex; align-items: center; gap: 12px; border: 1px solid var(--bpg-border); padding: 6px 7px 6px 16px; border-radius: 10px; background: var(--bpg-surface); }
+    .bpg-search:focus-within { outline: 2px solid var(--bpg-accent); outline-offset: 2px; }
+    .bpg-search > i { color: var(--bpg-accent); font-size: 19px; }
     .bpg-search input { min-width: 0; border: 0; box-shadow: none; font-size: 16px; background: transparent; }
     .bpg-search .btn { padding: 9px 22px; border-radius: 7px; }
-    .bpg-hint { margin: 10px 0 18px; font-size: 12px; color: #526872; }
+    .bpg-hint { margin: 10px 0 18px; font-size: 12px; color: var(--bpg-muted); }
     .bpg-filters { display: grid; grid-template-columns: 1.3fr 1.4fr 1fr 1fr 1fr; gap: 14px; }
     .bpg-filters label { min-width: 0; }
     .bpg-filters label > span { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 600; }
-    .form-select { border-color: #cedbdf; border-radius: 6px; color: #29444f; }
+    .form-select { border-color: var(--bpg-border); border-radius: 6px; color: var(--bpg-ink); }
     .bpg-content { padding: 18px 32px 28px; }
     .bpg-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
     .bpg-order { display: flex; align-items: center; gap: 10px; font-size: 12px; }
     .bpg-order select { width: auto; max-width: 215px; }
     .bpg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 20px; }
     .bpg-loading { opacity: .5; pointer-events: none; }
-    .bpg-card { min-width: 0; border: 1px solid #dde6e8; border-radius: 12px; overflow: hidden; background: white; display: flex; flex-direction: column; transition: box-shadow .15s; }
-    .bpg-card:hover { box-shadow: 0 5px 20px #163e4914; }
-    .bpg-cover { position: relative; width: 100%; height: 205px; border: 0; border-bottom: 1px solid #e8eff0; padding: 20px; background: #fbfdfd; display: flex; align-items: center; justify-content: center; }
+    .bpg-card { min-width: 0; border: 1px solid var(--bpg-border); border-radius: 12px; overflow: hidden; background: var(--bpg-surface); display: flex; flex-direction: column; transition: box-shadow .15s; }
+    .bpg-card:hover { box-shadow: var(--ux-shadow, var(--#{$prefix}box-shadow-sm)); }
+    .bpg-cover { position: relative; width: 100%; height: 205px; border: 0; border-bottom: 1px solid var(--bpg-border); padding: 20px; background: var(--bpg-soft); display: flex; align-items: center; justify-content: center; }
     .bpg-cover > img { width: 100%; height: 100%; object-fit: contain; }
-    .bpg-photo-count { position: absolute; bottom: 12px; right: 12px; background: #fff; border: 1px solid #dce6e8; border-radius: 20px; padding: 4px 10px; color: #32616b; font-size: 12px; }
-    .bpg-archived { position: absolute; top: 12px; left: 12px; background: #e8edef; color: #475a62; padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+    .bpg-photo-count { position: absolute; bottom: 12px; right: 12px; background: var(--bpg-surface); border: 1px solid var(--bpg-border); border-radius: 20px; padding: 4px 10px; color: var(--bpg-muted); font-size: 12px; }
+    .bpg-archived { position: absolute; top: 12px; left: 12px; background: var(--bpg-background); color: var(--bpg-muted); padding: 3px 8px; border-radius: 4px; font-size: 12px; }
     .bpg-card-body { padding: 17px; display: flex; flex: 1; flex-direction: column; align-items: flex-start; }
     .bpg-card h2 { font-size: 14px; line-height: 1.5; margin: 7px 0; font-weight: 650; overflow-wrap: anywhere; }
     .bpg-card h2 button { padding: 0; border: 0; color: inherit; background: transparent; text-align: left; font-weight: inherit; }
-    .bpg-code { display: inline-block; padding: 3px 7px; border-radius: 4px; background: #edf5f5; color: #17606a; font-size: 12px; overflow-wrap: anywhere; }
-    .bpg-category { margin: 10px 0 4px; font-size: 12px; color: #586b74; }
-    .bpg-reference { font-size: 12px; color: #586b74; margin: 0; overflow-wrap: anywhere; }
+    .bpg-code { display: inline-block; padding: 3px 7px; border-radius: 4px; background: var(--bpg-soft); color: var(--bpg-ink); font-size: 12px; overflow-wrap: anywhere; }
+    .bpg-category { margin: 10px 0 4px; font-size: 12px; color: var(--bpg-muted); }
+    .bpg-reference { font-size: 12px; color: var(--bpg-muted); margin: 0; overflow-wrap: anywhere; }
     .bpg-card-footer { display: flex; width: 100%; gap: 8px; justify-content: space-between; padding-top: 18px; margin-top: auto; }
     .bpg-empty { text-align: center; padding: 65px 15px; }
-    .bpg-empty > i { display: block; margin-bottom: 20px; color: #72999e; font-size: 38px; }
+    .bpg-empty > i { display: block; margin-bottom: 20px; color: var(--bpg-muted); font-size: 38px; }
     .bpg-empty h2 { font-size: 22px; }.bpg-empty .btn { margin: 6px; }
     .bpg-pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 25px; }
-    .bpg-pagination span { margin-right: 10px; color: #536872; }
+    .bpg-pagination span { margin-right: 10px; color: var(--bpg-muted); }
     @media (max-width: 1100px) { .bpg-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     @media (max-width: 700px) {
         .bpg-header, .bpg-content { padding: 16px; }
@@ -52,21 +63,21 @@
         .bpg-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
     }
 }
-.bpg-brand { color: #08717d; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
-.bpg-no-photo { display: flex; align-items: center; flex-direction: column; justify-content: center; gap: 14px; color: #687f88; text-align: center; }
-.bpg-no-photo > i { font-size: 40px; color: #90adb3; }.bpg-no-photo span { font-size: 12px; }
+.bpg-brand { color: var(--bpg-accent); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+.bpg-no-photo { display: flex; align-items: center; flex-direction: column; justify-content: center; gap: 14px; color: var(--bpg-muted); text-align: center; }
+.bpg-no-photo > i { font-size: 40px; color: var(--bpg-muted); }.bpg-no-photo span { font-size: 12px; }
 .bpg-dialog {
     .bpg-detail { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: 28px; }
-    .bpg-stage { height: 53vh; max-height: 480px; min-height: 260px; display: flex; align-items: center; justify-content: center; padding: 20px; background: #f7fafb; border-radius: 10px; }
+    .bpg-stage { height: 53vh; max-height: 480px; min-height: 260px; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--bpg-soft); border-radius: 10px; }
     .bpg-stage > img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .bpg-no-photo h3 { font-size: 17px; }.bpg-no-photo p { max-width: 320px; font-size: 13px; }
     .bpg-viewer-controls { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; }
     .bpg-thumbnails { display: flex; justify-content: center; gap: 10px; }
-    .bpg-thumbnails button { width: 70px; height: 70px; background: #fff; border: 2px solid #dae4e6; border-radius: 6px; padding: 5px; }
-    .bpg-thumbnails button.selected { border-color: #087e8b; }.bpg-thumbnails img { width: 100%; height: 100%; object-fit: contain; }
+    .bpg-thumbnails button { width: 70px; height: 70px; background: var(--bpg-surface); border: 2px solid var(--bpg-border); border-radius: 6px; padding: 5px; }
+    .bpg-thumbnails button.selected { border-color: var(--bpg-accent); }.bpg-thumbnails img { width: 100%; height: 100%; object-fit: contain; }
     .bpg-info { overflow-wrap: anywhere; }.bpg-info h2 { font-size: 20px; line-height: 1.4; margin: 8px 0 18px; }
     .bpg-info h3 { font-size: 14px; font-weight: 600; margin-top: 20px; }
-    dt { color: #536872; font-size: 11px; font-weight: 500; margin-top: 12px; }dd { font-size: 13px; margin: 3px 0; }
+    dt { color: var(--bpg-muted); font-size: 11px; font-weight: 500; margin-top: 12px; }dd { font-size: 13px; margin: 3px 0; }
     .bpg-description { white-space: pre-wrap; font-size: 13px; line-height: 1.6; }
     @media (max-width: 767px) { .bpg-detail { grid-template-columns: 1fr; gap: 20px; }.bpg-stage { height: 300px; } }
 }

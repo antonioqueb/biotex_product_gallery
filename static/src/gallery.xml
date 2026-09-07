@@ -2,65 +2,67 @@
 <templates xml:space="preserve">
     <t t-name="biotex_product_gallery.Gallery">
         <div class="bpg o_action" t-att-aria-busy="state.loading ? 'true' : 'false'">
-            <div class="bpg-header">
-                <div class="bpg-heading">
-                    <img src="/biotex_product_gallery/static/description/icon.svg" alt="" width="48" height="48"/>
-                    <div><h1>Galería de productos</h1><p>Encuentre el producto y explore sus imágenes.</p></div>
-                    <button class="btn btn-outline-secondary ms-auto" t-on-click="refresh" t-att-disabled="state.loading" title="Actualizar galería" aria-label="Actualizar galería"><i class="fa fa-refresh" aria-hidden="true"/><span class="d-none d-sm-inline ms-2">Actualizar</span></button>
+            <div class="bpg-scroll" role="region" aria-label="Galería de productos" tabindex="0">
+                <div class="bpg-header">
+                    <div class="bpg-heading">
+                        <img src="/biotex_product_gallery/static/description/icon.svg" alt="" width="48" height="48"/>
+                        <div><h1>Galería de productos</h1><p>Encuentre el producto y explore sus imágenes.</p></div>
+                        <button class="btn btn-outline-secondary ms-auto" t-on-click="refresh" t-att-disabled="state.loading" title="Actualizar galería" aria-label="Actualizar galería"><i class="fa fa-refresh" aria-hidden="true"/><span class="d-none d-sm-inline ms-2">Actualizar</span></button>
+                    </div>
+                    <form class="bpg-search" t-on-submit.prevent="submitSearch" role="search">
+                        <i class="fa fa-search" aria-hidden="true"/>
+                        <input type="search" class="form-control" aria-label="Buscar productos" placeholder="Nombre, clave, marca, referencia, sinónimo…" t-att-value="state.query" t-on-input="onSearch" maxlength="512" autocomplete="off"/>
+                        <button class="btn btn-primary" type="submit">Buscar</button>
+                    </form>
+                    <p class="bpg-hint">Escriba libremente: las palabras pueden estar en distinto orden y en distintos campos. También puede buscar fragmentos de una clave.</p>
+                    <div class="bpg-filters">
+                        <label><span>Coincidencia</span><select class="form-select" t-model="state.match" t-on-change="(ev) => this.setFilter('match', ev)"><option value="all">Todas las palabras</option><option value="any">Cualquier palabra · más amplio</option></select></label>
+                        <label><span>Familia / categoría</span><select class="form-select" t-model="state.category_id" t-on-change="(ev) => this.setFilter('category_id', ev)"><option value="">Todas las familias</option><option t-foreach="state.categories" t-as="item" t-key="item.id" t-att-value="item.id"><t t-esc="item.name"/></option></select></label>
+                        <label><span>Marca</span><select class="form-select" t-model="state.brand_id" t-on-change="(ev) => this.setFilter('brand_id', ev)"><option value="">Todas las marcas</option><option t-foreach="state.brands" t-as="item" t-key="item.id" t-att-value="item.id"><t t-esc="item.name"/></option></select></label>
+                        <label><span>Imágenes</span><select class="form-select" t-model="state.photos" t-on-change="(ev) => this.setFilter('photos', ev)"><option value="all">Con y sin imágenes</option><option value="with">Con imágenes</option><option value="without">Sin imágenes</option></select></label>
+                        <label><span>Productos</span><select class="form-select" t-model="state.status" t-on-change="(ev) => this.setFilter('status', ev)"><option value="active">Activos</option><option value="all">Activos y archivados</option><option value="archived">Archivados</option></select></label>
+                    </div>
                 </div>
-                <form class="bpg-search" t-on-submit.prevent="submitSearch" role="search">
-                    <i class="fa fa-search" aria-hidden="true"/>
-                    <input type="search" class="form-control" aria-label="Buscar productos" placeholder="Nombre, clave, marca, referencia, sinónimo…" t-att-value="state.query" t-on-input="onSearch" maxlength="512" autocomplete="off"/>
-                    <button class="btn btn-primary" type="submit">Buscar</button>
-                </form>
-                <p class="bpg-hint">Escriba libremente: las palabras pueden estar en distinto orden y en distintos campos. También puede buscar fragmentos de una clave.</p>
-                <div class="bpg-filters">
-                    <label><span>Coincidencia</span><select class="form-select" t-model="state.match" t-on-change="(ev) => this.setFilter('match', ev)"><option value="all">Todas las palabras</option><option value="any">Cualquier palabra · más amplio</option></select></label>
-                    <label><span>Familia / categoría</span><select class="form-select" t-model="state.category_id" t-on-change="(ev) => this.setFilter('category_id', ev)"><option value="">Todas las familias</option><option t-foreach="state.categories" t-as="item" t-key="item.id" t-att-value="item.id"><t t-esc="item.name"/></option></select></label>
-                    <label><span>Marca</span><select class="form-select" t-model="state.brand_id" t-on-change="(ev) => this.setFilter('brand_id', ev)"><option value="">Todas las marcas</option><option t-foreach="state.brands" t-as="item" t-key="item.id" t-att-value="item.id"><t t-esc="item.name"/></option></select></label>
-                    <label><span>Imágenes</span><select class="form-select" t-model="state.photos" t-on-change="(ev) => this.setFilter('photos', ev)"><option value="all">Con y sin imágenes</option><option value="with">Con imágenes</option><option value="without">Sin imágenes</option></select></label>
-                    <label><span>Productos</span><select class="form-select" t-model="state.status" t-on-change="(ev) => this.setFilter('status', ev)"><option value="active">Activos</option><option value="all">Activos y archivados</option><option value="archived">Archivados</option></select></label>
-                </div>
-            </div>
-            <div class="bpg-content">
-                <div class="bpg-toolbar">
-                    <div role="status" aria-live="polite"><strong t-esc="state.total"/> productos<t t-if="state.loading"><span class="ms-2 text-muted"><i class="fa fa-spinner fa-spin" aria-hidden="true"/> Buscando…</span></t></div>
-                    <button t-if="hasFilters" class="btn btn-link" t-on-click="reset">Limpiar búsqueda y filtros</button>
-                    <label class="bpg-order ms-auto"><span>Ordenar</span><select class="form-select" t-model="state.order" t-on-change="(ev) => this.setFilter('order', ev)"><option value="name">Nombre A–Z</option><option value="code">Clave</option><option value="recent">Actualizados recientemente</option></select></label>
-                </div>
-                <div t-if="state.error" class="alert alert-warning" role="alert"><p t-esc="state.error"/><button class="btn btn-outline-secondary" t-on-click="refresh">Reintentar</button></div>
-                <div t-elif="!state.loading and !state.products.length" class="bpg-empty">
-                    <i class="fa fa-search" aria-hidden="true"/><h2>No encontramos productos</h2>
-                    <p>Pruebe con menos palabras, una referencia o un nombre alternativo.</p>
-                    <button t-if="state.query" class="btn btn-primary" t-on-click="broaden">Ampliar búsqueda a cualquier palabra y quitar filtros</button>
-                    <button class="btn btn-outline-secondary" t-on-click="reset">Ver todos los productos activos</button>
-                </div>
-                <div t-else="" class="bpg-grid" t-att-class="{ 'bpg-loading': state.loading }">
-                    <article t-foreach="state.products" t-as="product" t-key="product.id" class="bpg-card">
-                        <button class="bpg-cover" t-on-click="() => this.showProduct(product)" t-att-disabled="state.opening" t-att-aria-label="'Ver imágenes de ' + product.name">
-                            <img t-if="product.photos.length" t-att-src="product.photos[0].thumbnail" t-att-alt="product.name" loading="lazy" decoding="async"/>
-                            <span t-else="" class="bpg-no-photo"><i class="fa fa-picture-o" aria-hidden="true"/><span>Sin imágenes todavía</span></span>
-                            <span t-if="product.photos.length" class="bpg-photo-count"><i class="fa fa-camera" aria-hidden="true"/> <t t-esc="product.photos.length"/></span>
-                            <span t-if="!product.active" class="bpg-archived">Archivado</span>
-                        </button>
-                        <div class="bpg-card-body">
-                            <div class="bpg-brand"><t t-esc="product.biotex_brand_id ? product.biotex_brand_id[1] : 'Sin marca'"/></div>
-                            <h2><button t-on-click="() => this.showProduct(product)" t-att-disabled="state.opening"><t t-esc="product.name"/></button></h2>
-                            <div class="bpg-code"><t t-esc="product.default_code || 'Sin clave asignada'"/></div>
-                            <p class="bpg-category"><t t-esc="product.categ_id ? product.categ_id[1] : 'Sin categoría'"/></p>
-                            <p t-if="product.biotex_reference" class="bpg-reference">Ref. <t t-esc="product.biotex_reference"/></p>
-                            <div class="bpg-card-footer">
-                                <button class="btn btn-sm btn-outline-secondary" t-on-click="() => this.showProduct(product)" t-att-disabled="state.opening">Ver detalle</button>
-                                <button class="btn btn-sm btn-link" t-on-click="() => this.openProduct(product.id)"><t t-if="product.photos.length">Abrir ficha</t><t t-else="">Agregar fotos</t><i class="fa fa-arrow-right ms-2" aria-hidden="true"/></button>
+                <div class="bpg-content">
+                    <div class="bpg-toolbar">
+                        <div role="status" aria-live="polite"><strong t-esc="state.total"/> productos<t t-if="state.loading"><span class="ms-2 text-muted"><i class="fa fa-spinner fa-spin" aria-hidden="true"/> Buscando…</span></t></div>
+                        <button t-if="hasFilters" class="btn btn-link" t-on-click="reset">Limpiar búsqueda y filtros</button>
+                        <label class="bpg-order ms-auto"><span>Ordenar</span><select class="form-select" t-model="state.order" t-on-change="(ev) => this.setFilter('order', ev)"><option value="name">Nombre A–Z</option><option value="code">Clave</option><option value="recent">Actualizados recientemente</option></select></label>
+                    </div>
+                    <div t-if="state.error" class="alert alert-warning" role="alert"><p t-esc="state.error"/><button class="btn btn-outline-secondary" t-on-click="refresh">Reintentar</button></div>
+                    <div t-elif="!state.loading and !state.products.length" class="bpg-empty">
+                        <i class="fa fa-search" aria-hidden="true"/><h2>No encontramos productos</h2>
+                        <p>Pruebe con menos palabras, una referencia o un nombre alternativo.</p>
+                        <button t-if="state.query" class="btn btn-primary" t-on-click="broaden">Ampliar búsqueda a cualquier palabra y quitar filtros</button>
+                        <button class="btn btn-outline-secondary" t-on-click="reset">Ver todos los productos activos</button>
+                    </div>
+                    <div t-else="" class="bpg-grid" t-att-class="{ 'bpg-loading': state.loading }">
+                        <article t-foreach="state.products" t-as="product" t-key="product.id" class="bpg-card">
+                            <button class="bpg-cover" t-on-click="() => this.showProduct(product)" t-att-disabled="state.opening" t-att-aria-label="'Ver imágenes de ' + product.name">
+                                <img t-if="product.photos.length" t-att-src="product.photos[0].thumbnail" t-att-alt="product.name" loading="lazy" decoding="async"/>
+                                <span t-else="" class="bpg-no-photo"><i class="fa fa-picture-o" aria-hidden="true"/><span>Sin imágenes todavía</span></span>
+                                <span t-if="product.photos.length" class="bpg-photo-count"><i class="fa fa-camera" aria-hidden="true"/> <t t-esc="product.photos.length"/></span>
+                                <span t-if="!product.active" class="bpg-archived">Archivado</span>
+                            </button>
+                            <div class="bpg-card-body">
+                                <div class="bpg-brand"><t t-esc="product.biotex_brand_id ? product.biotex_brand_id[1] : 'Sin marca'"/></div>
+                                <h2><button t-on-click="() => this.showProduct(product)" t-att-disabled="state.opening"><t t-esc="product.name"/></button></h2>
+                                <div class="bpg-code"><t t-esc="product.default_code || 'Sin clave asignada'"/></div>
+                                <p class="bpg-category"><t t-esc="product.categ_id ? product.categ_id[1] : 'Sin categoría'"/></p>
+                                <p t-if="product.biotex_reference" class="bpg-reference">Ref. <t t-esc="product.biotex_reference"/></p>
+                                <div class="bpg-card-footer">
+                                    <button class="btn btn-sm btn-outline-secondary" t-on-click="() => this.showProduct(product)" t-att-disabled="state.opening">Ver detalle</button>
+                                    <button class="btn btn-sm btn-link" t-on-click="() => this.openProduct(product.id)"><t t-if="product.photos.length">Abrir ficha</t><t t-else="">Agregar fotos</t><i class="fa fa-arrow-right ms-2" aria-hidden="true"/></button>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </div>
+                    <nav t-if="state.total" class="bpg-pagination" aria-label="Páginas de productos">
+                        <span><t t-esc="state.offset + 1"/>–<t t-esc="lastItem"/> de <t t-esc="state.total"/></span>
+                        <button class="btn btn-outline-secondary" aria-label="Página anterior" t-on-click="previous" t-att-disabled="state.loading || state.offset === 0"><i class="fa fa-chevron-left" aria-hidden="true"/></button>
+                        <button class="btn btn-outline-secondary" aria-label="Página siguiente" t-on-click="next" t-att-disabled="state.loading || lastItem &gt;= state.total"><i class="fa fa-chevron-right" aria-hidden="true"/></button>
+                    </nav>
                 </div>
-                <nav t-if="state.total" class="bpg-pagination" aria-label="Páginas de productos">
-                    <span><t t-esc="state.offset + 1"/>–<t t-esc="lastItem"/> de <t t-esc="state.total"/></span>
-                    <button class="btn btn-outline-secondary" aria-label="Página anterior" t-on-click="previous" t-att-disabled="state.loading || state.offset === 0"><i class="fa fa-chevron-left" aria-hidden="true"/></button>
-                    <button class="btn btn-outline-secondary" aria-label="Página siguiente" t-on-click="next" t-att-disabled="state.loading || lastItem &gt;= state.total"><i class="fa fa-chevron-right" aria-hidden="true"/></button>
-                </nav>
             </div>
         </div>
     </t>

@@ -2,6 +2,8 @@
 
 Aplicación independiente para consultar visualmente el catálogo existente. Incluye icono SVG propio, tarjetas adaptables a móvil, visor de hasta tres fotografías y acceso a la ficha del producto para cargar o actualizar sus imágenes.
 
+La galería usa los colores del tema activo de Odoo y los estilos compartidos del sistema. Su área interna permite desplazarse por todos los productos y llegar a la paginación con rueda, gesto táctil o teclado, también en pantallas pequeñas. El icono mantiene el estilo y el verde de la aplicación de Catálogo.
+
 ## Uso
 
 Abra **Galería de productos** desde el menú de aplicaciones. Escriba en la barra de búsqueda y pulse Buscar, o espere a que los resultados se actualicen mientras escribe.
